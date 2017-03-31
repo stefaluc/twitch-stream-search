@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 
-export function SearchBar() {
-  return (
-    <div>
-      <TextField
-        hintText="Search..."
-        floatingLabelText="Stream Query"
-      />
-    </div>
-  );
+class SearchBar extends Component {
+  render() {
+    return (
+      <div>
+        <TextField
+          hintText="Search query..."
+          floatingLabelText="Twitch Streams"
+        />
+      </div>
+    );
+  }
 }
 
 export default SearchBar;

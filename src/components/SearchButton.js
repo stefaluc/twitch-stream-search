@@ -7,7 +7,6 @@ const SearchButton = () => {
       <RaisedButton
         label="Submit Search"
         primary={true}
-        style={{margin: 12}}
       />
     </div>
   );

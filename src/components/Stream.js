@@ -1,9 +1,9 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 
 const Stream = (props) => {
   return (
     <div>
-      Stream: {props.id}
+      Stream: {props.name}
     </div>
   )
 }
