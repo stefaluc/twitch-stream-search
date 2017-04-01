@@ -3,29 +3,39 @@ import { connect } from 'react-redux'
 import { addStream } from '../actions'
 
 // import SearchBar from '../components/SearchBar'
-import SearchButton from '../components/SearchButton'
+// import SearchButton from '../components/SearchButton'
 import TextField from 'material-ui/TextField'
+import RaisedButton from 'material-ui/RaisedButton'
 
 let Search = ({ dispatch }) => {
   let input
+
+  const submitSearch = (e) => {
+    e.preventDefault()
+
+    if (input.value === '') {
+      return
+    }
+
+    dispatch(addStream(input.value))
+    input.value = ''
+  }
+
   return (
     <div>
-      <form onSubmit={e => {
-        e.preventDefault()
-        console.log(input);
-        console.log(input.value);
-        dispatch(addStream(input.value)) 
-        input.value = ''
-      }}>
+      <form onSubmit={submitSearch}>
         <TextField ref={(node) => {
-          console.log(node)
-          console.log(node.input)
-          console.log(node.input.value)
-          input = node.input
-        }}
-        hintText="dqwd"
+            console.log(node.input.value)
+            input = node.input
+          }}
+          hintText="Search query..."
+          floatingLabelText="Twitch Streams"
         />
-        <SearchButton />
+        <RaisedButton
+          label="Submit Search"
+          primary={true}
+          onClick={submitSearch}
+        />
       </form>
     </div>
   );

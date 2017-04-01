@@ -1,8 +1,9 @@
-import streams from './streams';
+import { selectedStream, streamsByStream } from './streams';
 import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
-  streams
+  selectedStream,
+  streamsByStream
 });
 
 export default rootReducer;
