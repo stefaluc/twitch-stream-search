@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { selectStream, fetchStreamsIfNeeded, invalidateStream } from '../actions'
 import Search from './Search'
-import StreamListContainer from './StreamListContainer'
+import StreamList from '../components/StreamList'
 import './App.css'
 
 class App extends Component {
@@ -41,23 +41,60 @@ class App extends Component {
     const { selectedStream, streams, isFetching, lastUpdated } = this.props
     return (
       <div>
-        <Search
-          value={selectedStream}
-          onChange={this.handleChange}
-        />
-        <StreamListContainer />
+        <header>
+          <div className="container">
+            <Search
+              value={selectedStream}
+              onChange={this.handleChange}
+            />
+          </div>
+        </header>
+        <p>
+          {lastUpdated &&
+              <span>
+                Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
+                {' '}
+              </span>
+          }
+          {!isFetching &&
+              <a href='#'
+                onClick={this.handleRefreshClick}>
+                Refresh
+              </a>
+          }
+        </p>
+        {isFetching && streams.length === 0 &&
+            <h2>Loading...</h2>
+        }
+        {!isFetching && streams.length === 0 &&
+            <h2>Empty.</h2>
+        }
+        {streams.length > 0 &&
+            <div style={{ opacity: isFetching ? 0.5 : 1 }}>
+              <StreamList streams={streams} />
+            </div>
+        }
       </div>
     )
   }
 }
 
-function mapStateToProps(state) {
-  const { selectedStream, streamByStreams } = state
+App.propTypes = {
+  selectedStream: PropTypes.string.isRequired,
+  streams: PropTypes.array.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  lastUpdated: PropTypes.number,
+  dispatch: PropTypes.func.isRequired
+}
+
+const mapStateToProps = (state) => {
+  const { selectedStream, streamsByStream } = state
+
   const {
     isFetching,
     lastUpdated,
     items: streams
-  } = streamByStreams[selectedStream] || {
+  } = streamsByStream[selectedStream] || {
     isFetching: true,
     items: []
   }

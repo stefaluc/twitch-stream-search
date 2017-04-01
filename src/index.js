@@ -4,15 +4,15 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import App from './containers/App';
 import './main.css';
 import { Provider } from 'react-redux';
-import Store from './store';
+import configureStore from './store';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 injectTapEventPlugin();
 
-const StoreInstance = Store();
+const store = configureStore();
 
 ReactDOM.render(
-  <Provider store={StoreInstance}>
+  <Provider store={store}>
     <MuiThemeProvider>
       <App />
     </MuiThemeProvider>

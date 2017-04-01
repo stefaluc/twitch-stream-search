@@ -29,7 +29,7 @@ export const RECEIVE_STREAMS = 'RECEIVE_STREAMS'
 const receiveStreams = (stream, json) => ({
   type: RECEIVE_STREAMS,
   stream,
-  streams: json.data.children.map(child => child.data),
+  streams: json.streams.map(child => child),
   receivedAt: Date.now()
 })
 
@@ -37,7 +37,14 @@ const fetchStreams = (stream) => {
   return (dispatch) => {
     dispatch(requestStreams(stream))
 
-    return fetch(`https://api.twitch.tv/kraken/search/streams?query=${stream}`)
+    const payload = {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/vnd.twitchtv.v5+json',
+        'Client-ID': '8wp5eczr3myb0gzot5u7yyeyv2ixju'
+      }
+    }
+    return fetch(`https://api.twitch.tv/kraken/search/streams?query=${stream}`, payload)
       .then(response => {
         if (response.status >= 400) {
           console.log(response)

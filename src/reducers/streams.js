@@ -1,31 +1,3 @@
-/* const stream = (state = {}, action) => {
-  switch (action.type) {
-    case 'ADD_STREAM':
-      return {
-        id: action.id,
-        name: action.name
-      }
-
-    default:
-      return state
-  }
-}
-
-const streams = (state = [], action) => {
-  switch (action.type) {
-    case 'ADD_STREAM':
-      return [
-        ...state,
-        stream(undefined, action)
-      ]
-
-    default:
-      return state
-  }
-}
-
-export default streams */
-
 import {
   SELECT_STREAM, INVALIDATE_STREAM,
   REQUEST_STREAMS, RECEIVE_STREAMS
@@ -59,7 +31,7 @@ const streams = (state = {
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
-        items: action.posts,
+        items: action.streams,
         lastUpdated: action.receivedAt
       })
     default:
@@ -76,6 +48,6 @@ export const streamsByStream = (state = {}, action) => {
           [action.stream]: streams(state[action.stream], action)
         })
       default:
-      return state
+        return state
   }
 }

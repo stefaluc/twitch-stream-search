@@ -1,12 +1,12 @@
 import React from 'react'
 import Stream from './Stream'
 
-const StreamList = ({ streams }) => {
+const StreamList = (props) => {
   return (
     <div>
-      {streams.map(stream =>
+      {props.streams.map((stream, id) =>
         <Stream
-          key={stream.id}
+          key={id}
           {...stream}
         />
       )}

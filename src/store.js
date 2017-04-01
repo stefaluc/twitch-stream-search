@@ -5,7 +5,7 @@ import { createLogger } from 'redux-logger'
 
 const loggerMiddleware = createLogger()
 
-export default(initialState) => {
+const configureStore = (initialState) => {
   return createStore(
     rootReducer,
     initialState,
@@ -15,3 +15,5 @@ export default(initialState) => {
     )
   )
 }
+
+export default configureStore
