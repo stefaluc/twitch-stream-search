@@ -44,7 +44,7 @@ const fetchStreams = (stream) => {
         'Client-ID': '8wp5eczr3myb0gzot5u7yyeyv2ixju'
       }
     }
-    return fetch(`https://api.twitch.tv/kraken/search/streams?query=${stream}`, payload)
+    return fetch(`https://api.twitch.tv/kraken/search/streams?query=${stream}&limit=100`, payload)
       .then(response => {
         if (response.status >= 400) {
           console.log(response)

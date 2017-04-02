@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { selectStream } from '../actions'
 
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -25,11 +24,15 @@ class Search extends Component {
       <div>
         <form onSubmit={this.submitSearch}>
           <TextField ref={(node) => {
-              this.inputNode = node.input
+              if (node !== null) {
+                this.inputNode = node.input
+              }
             }}
             hintText="Search query..."
             floatingLabelText="Twitch Streams"
+            fullWidth={true}
           />
+          <br />
           <RaisedButton
             label="Submit Search"
             primary={true}

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { selectStream, fetchStreamsIfNeeded, invalidateStream } from '../actions'
 import Search from './Search'
 import StreamList from '../components/StreamList'
-import './App.css'
+import CircularProgress from 'material-ui/CircularProgress'
 
 class App extends Component {
   constructor(props) {
@@ -49,31 +49,37 @@ class App extends Component {
             />
           </div>
         </header>
-        <p>
-          {lastUpdated &&
-              <span>
-                Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
-                {' '}
-              </span>
+        <div className="container">
+          <div>
+            {lastUpdated &&
+                <span>
+                  Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
+                  {' '}
+                </span>
+            }
+            {!isFetching &&
+                <a href='#'
+                  onClick={this.handleRefreshClick}>
+                  Refresh
+                </a>
+            }
+          </div>
+          {isFetching && streams.length === 0 &&
+              <div style={{display: 'flex', justifyContent: 'center'}}>
+                <CircularProgress />
+              </div>
           }
-          {!isFetching &&
-              <a href='#'
-                onClick={this.handleRefreshClick}>
-                Refresh
-              </a>
+          {!isFetching && streams.length === 0 &&
+              <h1>No streams found for search: {selectedStream}</h1>
           }
-        </p>
-        {isFetching && streams.length === 0 &&
-            <h2>Loading...</h2>
-        }
-        {!isFetching && streams.length === 0 &&
-            <h2>Empty.</h2>
-        }
-        {streams.length > 0 &&
-            <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-              <StreamList streams={streams} />
-            </div>
-        }
+          {streams.length > 0 &&
+              <div style={{ opacity: isFetching ? 0.5 : 1 }}>
+                <h1>Showing results for search: {selectedStream}</h1>
+                Total results: {streams.length}
+                <StreamList streams={streams} />
+              </div>
+          }
+        </div>
       </div>
     )
   }
