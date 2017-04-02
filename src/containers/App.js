@@ -47,23 +47,24 @@ class App extends Component {
               value={selectedStream}
               onChange={this.handleChange}
             />
+            <div className="bottom-right">
+              {lastUpdated &&
+                  <span>
+                    Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
+                    {' '}
+                  </span>
+              }
+              {!isFetching &&
+                  <a href='#'
+                    onClick={this.handleRefreshClick}>
+                    Refresh
+                  </a>
+              }
+            </div>
           </div>
         </header>
         <div className="container">
-          <div>
-            {lastUpdated &&
-                <span>
-                  Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
-                  {' '}
-                </span>
-            }
-            {!isFetching &&
-                <a href='#'
-                  onClick={this.handleRefreshClick}>
-                  Refresh
-                </a>
-            }
-          </div>
+          
           {isFetching && streams.length === 0 &&
               <div style={{display: 'flex', justifyContent: 'center'}}>
                 <CircularProgress />
@@ -74,7 +75,7 @@ class App extends Component {
           }
           {streams.length > 0 &&
               <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-                <h1>Showing results for search: {selectedStream}</h1>
+                <h1>Showing results for search: <span className="bold2">{selectedStream}</span></h1>
                 Total results: {streams.length}
                 <StreamList streams={streams} />
               </div>

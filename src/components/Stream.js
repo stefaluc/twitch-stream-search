@@ -1,7 +1,7 @@
 import React from 'react'
 import LazyLoad from 'react-lazyload'
 import CircularProgress from 'material-ui/CircularProgress'
-import '../main.css'
+import '../css/Stream.css'
 
 const Stream = (props) => {
   console.log(props)
@@ -14,12 +14,13 @@ const Stream = (props) => {
           </a>
         </LazyLoad>
       </div>
-      <h2>{props.channel.status}</h2>
-      Game: {props.game}
-      <br />
-      Streamer: <a href={props.channel.url}>{props.channel.name}</a>
-      <br />
-      <div className="viewcount">{props.viewers} viewers</div>
+      <div className="content">
+        <h2>{props.channel.status}</h2>
+        <span className="bold1">Game:</span> {props.game}
+        <br />
+        <span className="bold1">Streamer:</span> <a href={props.channel.url}>{props.channel.name}</a>
+        <div className="bottom-right">{props.viewers} viewers</div>
+      </div>
     </div>
   )
 }

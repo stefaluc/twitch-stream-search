@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import App from './containers/App';
-import './main.css';
+import './css/main.css';
 import { Provider } from 'react-redux';
 import configureStore from './store';
 import injectTapEventPlugin from 'react-tap-event-plugin';
