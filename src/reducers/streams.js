@@ -1,7 +1,22 @@
 import {
+  INCREMENT_PAGE, DECREMENT_PAGE, RESET_PAGE_NUMBER,
   SELECT_STREAM, INVALIDATE_STREAM,
   REQUEST_STREAMS, RECEIVE_STREAMS
 } from '../actions'
+
+export const pageNumber = (state = 0, action) => {
+  switch (action.type) {
+    case INCREMENT_PAGE:
+      return state + 1
+    case DECREMENT_PAGE:
+      return state - 1
+    case RESET_PAGE_NUMBER:
+      return 0
+    default:
+      return state
+  }
+}
+
 
 export const selectedStream = (state = 'starcraft', action) => {
   switch (action.type) {

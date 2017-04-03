@@ -1,15 +1,27 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { selectStream, fetchStreamsIfNeeded, invalidateStream } from '../actions'
 import Search from './Search'
 import StreamList from '../components/StreamList'
+import PageChange from '../components/PageChange'
 import CircularProgress from 'material-ui/CircularProgress'
+import { 
+  selectStream, 
+  fetchStreamsIfNeeded, 
+  invalidateStream,
+  incrementPage,
+  decrementPage,
+  resetPageNumber
+} from '../actions'
+
+export const STREAMS_PER_PAGE = 10
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
     this.handleRefreshClick = this.handleRefreshClick.bind(this)
+    this.handleIncrement = this.handleIncrement.bind(this)
+    this.handleDecrement = this.handleDecrement.bind(this)
   }
 
   componentDidMount() {
@@ -25,28 +37,39 @@ class App extends Component {
   }
 
   handleChange(nextStream) {
+    this.props.dispatch(resetPageNumber())
     this.props.dispatch(selectStream(nextStream))
     this.props.dispatch(fetchStreamsIfNeeded(nextStream))
   }
 
   handleRefreshClick(e) {
     e.preventDefault()
-
     const { dispatch, selectedStream } = this.props
     dispatch(invalidateStream(selectedStream))
     dispatch(fetchStreamsIfNeeded(selectedStream))
   }
 
+  handleIncrement() {
+    this.props.dispatch(incrementPage())
+  }
+
+  handleDecrement() {
+    this.props.dispatch(decrementPage())
+  }
+
   render() {
-    const { selectedStream, streams, isFetching, lastUpdated } = this.props
+    const { selectedStream, streams, isFetching, lastUpdated, pageNumber } = this.props
+
+    // keep track of streams to display for current page
+    const firstPage = pageNumber * STREAMS_PER_PAGE
+    // do not exceed streams.length
+    const temp = (pageNumber * STREAMS_PER_PAGE) + STREAMS_PER_PAGE
+    const lastPage = temp > streams.length ? streams.length : temp
     return (
       <div>
         <header>
           <div className="container">
-            <Search
-              value={selectedStream}
-              onChange={this.handleChange}
-            />
+            <Search value={selectedStream} onChange={this.handleChange} />
             <div className="bottom-right">
               {lastUpdated &&
                   <span>
@@ -64,21 +87,37 @@ class App extends Component {
           </div>
         </header>
         <div className="container">
-          
           {isFetching && streams.length === 0 &&
-              <div style={{display: 'flex', justifyContent: 'center'}}>
-                <CircularProgress />
-              </div>
+             <div style={{display: 'flex', justifyContent: 'center'}}>
+               <CircularProgress />
+             </div>
           }
           {!isFetching && streams.length === 0 &&
-              <h1>No streams found for search: {selectedStream}</h1>
+            <h1>No streams found for search: <span className="bold2">{selectedStream}</span></h1>
           }
           {streams.length > 0 &&
-              <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-                <h1>Showing results for search: <span className="bold2">{selectedStream}</span></h1>
-                Total results: {streams.length}
-                <StreamList streams={streams} />
+            <div style={{ opacity: isFetching ? 0.5 : 1 }}>
+              <h1>
+                Showing results {firstPage + 1}-{lastPage} of {streams.length} for search: <span className="bold2">{selectedStream}</span>
+              </h1>
+              <div className="top-right">
+                <PageChange
+                  pageNumber={pageNumber}
+                  onIncrement={this.handleIncrement} 
+                  onDecrement={this.handleDecrement} 
+                  streamCount={streams.length}
+                />
               </div>
+              <StreamList streams={streams.slice(firstPage, lastPage)} />
+              <div style={{fontSize: 24, position: 'absolute', right: 0}}>
+                <PageChange
+                    pageNumber={pageNumber}
+                    onIncrement={this.handleIncrement} 
+                    onDecrement={this.handleDecrement} 
+                    streamCount={streams.length}
+                />
+              </div>
+            </div>
           }
         </div>
       </div>
@@ -95,8 +134,9 @@ App.propTypes = {
 }
 
 const mapStateToProps = (state) => {
-  const { selectedStream, streamsByStream } = state
+  const { selectedStream, streamsByStream, pageNumber } = state
 
+  console.log(state)
   const {
     isFetching,
     lastUpdated,
@@ -110,7 +150,8 @@ const mapStateToProps = (state) => {
     selectedStream,
     streams,
     isFetching,
-    lastUpdated
+    lastUpdated,
+    pageNumber
   }
 }
 

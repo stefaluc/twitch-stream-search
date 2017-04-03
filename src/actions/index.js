@@ -1,11 +1,13 @@
 import fetch from 'isomorphic-fetch'
 
-/* let nextStreamId = 0
-export const addStream = (name) => ({
-  type: 'ADD_STREAM',
-  id: nextStreamId++,
-  name
-}) */
+export const INCREMENT_PAGE = 'INCREMENT_PAGE'
+export const incrementPage = () => ({ type: INCREMENT_PAGE })
+
+export const DECREMENT_PAGE = 'DECREMENT_PAGE'
+export const decrementPage = () => ({ type: DECREMENT_PAGE })
+
+export const RESET_PAGE_NUMBER = 'RESET_PAGE_NUMBER'
+export const resetPageNumber = () => ({ type: RESET_PAGE_NUMBER })
 
 export const SELECT_STREAM = 'SELECT_STREAM'
 export const selectStream = (stream) => ({
