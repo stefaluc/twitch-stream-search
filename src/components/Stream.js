@@ -4,7 +4,6 @@ import CircularProgress from 'material-ui/CircularProgress'
 import '../css/Stream.css'
 
 const Stream = (props) => {
-  console.log(props)
   return (
     <div className="stream">
       <div className="img-container">

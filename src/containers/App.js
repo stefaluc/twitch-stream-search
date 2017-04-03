@@ -24,6 +24,7 @@ class App extends Component {
     this.handleDecrement = this.handleDecrement.bind(this)
   }
 
+  // initial fetch of streams
   componentDidMount() {
     const { dispatch, selectedStream } = this.props
     dispatch(fetchStreamsIfNeeded(selectedStream))
@@ -36,12 +37,14 @@ class App extends Component {
     }
   }
 
+  // passed to Search; resets pageNumber to 0, changes active stream, and fetches active streams
   handleChange(nextStream) {
     this.props.dispatch(resetPageNumber())
     this.props.dispatch(selectStream(nextStream))
     this.props.dispatch(fetchStreamsIfNeeded(nextStream))
   }
 
+  // invalidates current streams and then refetches
   handleRefreshClick(e) {
     e.preventDefault()
     const { dispatch, selectedStream } = this.props
@@ -49,10 +52,12 @@ class App extends Component {
     dispatch(fetchStreamsIfNeeded(selectedStream))
   }
 
+  // passed to PageChange; increments pageNumber by 1
   handleIncrement() {
     this.props.dispatch(incrementPage())
   }
 
+  // passed to PageChange; decrements pageNumber by 1
   handleDecrement() {
     this.props.dispatch(decrementPage())
   }
@@ -135,8 +140,6 @@ App.propTypes = {
 
 const mapStateToProps = (state) => {
   const { selectedStream, streamsByStream, pageNumber } = state
-
-  console.log(state)
   const {
     isFetching,
     lastUpdated,
