@@ -8,10 +8,14 @@ const PageChange = (props) => {
   return (
     <div>
       {!first &&
-        <i className="material-icons icon" onClick={props.onDecrement}>keyboard_arrow_left</i>}
-      <span style={{position:'relative', bottom: 5}}>{' ' + (props.pageNumber + 1) + ' '}</span>
+        <i className="material-icons icon" onClick={props.onDecrement}>keyboard_arrow_left</i>
+      }
+      <span style={{position:'relative', bottom: 5}}>
+        {' ' + (props.pageNumber + 1) + ' / ' + (Math.ceil(props.streamCount / STREAMS_PER_PAGE)) + ' '}
+      </span>
       {!last &&
-        <i className="material-icons icon" onClick={props.onIncrement}>keyboard_arrow_right</i>}
+        <i className="material-icons icon" onClick={props.onIncrement}>keyboard_arrow_right</i>
+      }
     </div>
   )
 }
